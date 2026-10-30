@@ -1,6 +1,6 @@
 {
   "name": "Centry Auth IDP: RPC",
-  "version": "0.3",
+  "version": "0.4",
   "depends_on": [
     "auth_core"
   ],
