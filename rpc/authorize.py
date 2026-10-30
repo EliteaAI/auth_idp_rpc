@@ -43,7 +43,7 @@ class RPC:  # pylint: disable=E1101,R0903
                     return self.check_authorization_header(source, auth_header)
                 except ValueError:
                     if not allow_auth_traversal:
-                        return auth_core.access_denied_reply(source, to_json=True)
+                        return auth_core.credential_rejected_reply(source, to_json=True)
                     #
                     auth_by_header_failed = True
             # Check other auth headers
@@ -58,7 +58,7 @@ class RPC:  # pylint: disable=E1101,R0903
                         return self.check_credential_data(source, credential_type, credential_data)
                     except ValueError:
                         if not allow_auth_traversal:
-                            return auth_core.access_denied_reply(source, to_json=True)
+                            return auth_core.credential_rejected_reply(source, to_json=True)
                         #
                         auth_by_header_failed = True
             # NB: Public rules check is also done in main pylon auth proxy-plugin
@@ -75,7 +75,7 @@ class RPC:  # pylint: disable=E1101,R0903
                     return auth_core.access_success_reply(source, "public", to_json=True)
                 # Never visited auth
                 if auth_by_header_failed:
-                    return auth_core.access_denied_reply(source, to_json=True)
+                    return auth_core.credential_rejected_reply(source, to_json=True)
                 #
                 target_token = auth_core.sign_target_url(auth_core.make_source_url(source))
                 return auth_core.access_needed_redirect(target_token, to_json=True)
@@ -102,7 +102,7 @@ class RPC:  # pylint: disable=E1101,R0903
                 return auth_core.access_success_reply(source, "public", to_json=True)
             # Auth needed or expired
             if auth_by_header_failed:
-                return auth_core.access_denied_reply(source, to_json=True)
+                return auth_core.credential_rejected_reply(source, to_json=True)
             #
             target_token = auth_core.sign_target_url(auth_core.make_source_url(source))
             return auth_core.access_needed_redirect(target_token, to_json=True)
